@@ -4,6 +4,9 @@ use App\Http\Controllers\Auth\RegisterController; //imported the RegisterControl
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PostLikeController;
+use App\Http\Controllers\PostsController;
+use App\Http\Controllers\UserPostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,13 +33,27 @@ Route::post('/login', [LoginController::class, 'store']);
 Route::post('/logout', [LogoutController::class, 'store'])->name('logout');
 
 // dashboard requests
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard');
+//->middleware('auth'); //another way of adding auth middleware
 
 // Homepage
 Route::get('/', function () {
     return view('home');
 })->name('home');
 
-Route::get('/posts', function () {
-    return view('posts.index');
-});
+
+// Posts 
+Route::get('/posts', [PostsController::class, 'index'])->name('posts');
+// show a single post
+Route::get('/posts/{post}', [PostsController::class, 'show'])->name('post.show');
+Route::post('/posts', [PostsController::class, 'store']);
+Route::delete('/posts/{post}', [PostsController::class, 'destroy'])->name('posts.destroy');
+
+// Like posts
+// post was passed in here instead of the id to access the model to make code simple
+Route::post('/posts/{post}/likes', [PostLikeController::class, 'store'])->name('posts.like');
+Route::delete('/posts/{post}/likes', [PostLikeController::class, 'destroy'])->name('posts.like');
+
+// User Post
+Route::get('/users/{user:username}/posts', [UserPostController::class, 'index'])->name('user.posts');

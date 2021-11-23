@@ -13,15 +13,15 @@
     <nav class="p-6 mb-4 bg-white flex justify-between">
         <ul class="flex items-center">
             <li><a href="{{ route('home') }}" class="p-3">Home</a></li>
-            <li><a href="/" class="p-3">Dashboard</a></li>
-            <li><a href="/" class="p-3">Posts</a></li>
+            <li><a href="{{ route('dashboard') }}" class="p-3">Dashboard</a></li>
+            <li><a href="{{ route('posts') }}" class="p-3">Posts</a></li>
         </ul>
         <ul class="flex items-center">
             {{-- if the user is signed in --}}
             @auth
-                <li><a href="/" class="p-3">Saiicodes</a></li>
+                <li><a href="/" class="p-3">{{Auth::user()->name}}</a></li>
                 <li>
-                    <form action="{{ route('logout') }}" method="post" class="inline">
+                    <form action="{{ route('logout') }}" method="post" class=" p-3 inline">
                         @csrf
                         <button type="submit">Logout</button>
                     </form>  
